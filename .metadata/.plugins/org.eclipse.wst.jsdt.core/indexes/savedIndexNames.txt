@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+D:\proiecte_extra\CNP_Validator_Java_Maven_2\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+1158933189.index
+1719543559.index
+2208938355.index
+3871464703.index
+1552347476.index
+337018228.index

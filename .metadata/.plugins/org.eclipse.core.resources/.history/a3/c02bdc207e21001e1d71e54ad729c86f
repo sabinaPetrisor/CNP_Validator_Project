@@ -1,0 +1,62 @@
+@charset "ISO-8859-1";
+
+*{
+	margin: 0;
+	width: 100%;
+}
+
+.page-title{	
+	display: flex;
+	justify-content: center;
+	font-size: 30px;
+	font-weight: bold;
+	margin-top: 3%;
+}
+
+.container{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+	margin-top: 5%;
+}
+
+.validation-form{
+	width: 20%;
+}
+
+.insert-text{
+	border: 2px solid black;
+	font-size: 1em;
+}
+
+.form-button{
+	width: auto;
+	font-size: 1em;
+}
+
+#msg{
+	margin-top: 5%;
+	font-size: 1.1em;
+	display: inline-block;
+	justify-items: center;
+}
+
+/*.validation-msg{
+	margin-top: 5%;
+	font-size: 1.1em;
+}*/
+
+.validation-msg-error{
+	/*display: flex;
+	align-items: center;
+	justify-content: center;*/
+	color: red;
+}
+
+.validation-msg-success{
+	/*display: flex;
+	align-items: center;
+	justify-content: center;*/
+	color: green;
+}

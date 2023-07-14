@@ -1,0 +1,413 @@
+package com.validator;
+
+import java.io.IOException;
+
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class CNPValidator extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	private String[] checkSComponent(String value) {
+		int s = Integer.parseInt(value.substring(0, 1));
+		String res;
+		String begginingOfYear = "";
+		String gender = "";
+		switch(s) {
+		case 1:
+			res = "Digit 1 means you are a male born between 1900 and 1999";
+			begginingOfYear = "19";
+			gender = "male";
+			break;
+		case 2:
+			res = "Digit 2 means you are a female born between 1900 and 1999";
+			begginingOfYear = "19";
+			gender = "female";
+			break;
+		case 3:
+			res = "Digit 3 means you are a male born between 1800 and 1899";
+			begginingOfYear = "18";
+			gender = "male";
+			break;
+		case 4:
+			res = "Digit 4 means you are a female born between 1800 and 1899";
+			begginingOfYear = "18";
+			gender = "female";
+			break;
+		case 5:
+			res = "Digit 5 means you are a male born between 2000 and 2099";
+			begginingOfYear = "20";
+			gender = "male";
+			break;
+		case 6:
+			res = "Digit 6 means you are a female born between 2000 and 2099";
+			begginingOfYear = "20";
+			gender = "female";
+			break;
+		case 7:
+			res = "Digit 7 means you are a male resident";
+			gender = "male";
+			break;
+		case 8:
+			res = "Digit 7 means you are a female resident";
+			gender = "female";
+			break;
+		default:
+			res = "";
+		}
+		String[] arrayToReturn = new String[3];
+		arrayToReturn[0] = res;
+		arrayToReturn[1] = begginingOfYear;
+		arrayToReturn[2] = gender;
+		return arrayToReturn;	
+	}
+	
+	private String isLeapYear(String year) {
+		int yearInt = Integer.parseInt(year);
+		if((yearInt % 4 == 0 && yearInt % 100 != 0) || (yearInt % 100 == 0 && yearInt % 400 == 0)) {
+			return "true";
+		}
+		return "false";
+	}
+	
+	private String[] checkAComponent(String value, String begginingOfYear) {
+		String a = value.substring(1, 3);
+		String fullYear = begginingOfYear.concat(a);
+		String[] arrayToReturn = new String[2];
+		String res = "Number " + a + " means you year of birth is " + fullYear;
+		arrayToReturn[0] = res;
+		arrayToReturn[1] = isLeapYear(fullYear);
+		return arrayToReturn;
+	}
+	
+	private String checkLComponent(String value) {
+		String lName = "";
+		String res = "";
+		String l = value.substring(3, 5);
+		if(l.matches("0[1-9]|1[0-2]")) {
+			int lDigit = Integer.parseInt(l);
+			switch(lDigit) {
+			case 1:
+				lName = "January";
+				break;
+			case 2:
+				lName = "February";
+				break;
+			case 3:
+				lName = "March";
+				break;
+			case 4:
+				lName = "April";
+				break;
+			case 5:
+				lName = "May";
+				break;
+			case 6:
+				lName = "June";
+				break;
+			case 7:
+				lName = "July";
+				break;
+			case 8:
+				lName = "August";
+				break;
+			case 9:
+				lName = "September";
+				break;
+			case 10:
+				lName = "October";
+				break;
+			case 11:
+				lName = "November";
+				break;
+			case 12:
+				lName = "December";
+				break;
+			}
+			res = "Number " + l + " means your month of birth is " + lName;
+		}
+		return res;
+	}
+	
+	private String checkZComponent(String value, String isLeapYear) {
+		String z = value.substring(5, 7);
+		int zInt = Integer.parseInt(z);
+		String month = value.substring(3, 5);
+		String res = "";
+		if(month.matches("0[13578]|1[02]")) {
+			if(zInt >= 1 && zInt <= 31) {
+				res = "This number means your day of birth is " + z;
+			}
+		}
+		if(month.matches("0[469]|11")) {
+			if(zInt >= 1 && zInt <= 30) {
+				res = "This number means your day of birth is " + z;
+			}
+		}
+		if(month.matches("02")) {
+			if(isLeapYear == "true") {
+				if(zInt >= 1 && zInt <= 29) {
+					res = "This number means your day of birth is " + z;
+				}
+			}
+			else {
+				if(zInt >= 1 && zInt <= 28) {
+					res = "This number means your day of birth is " + z;
+				}
+			}
+		}
+		return res;
+	}
+	
+	private String checkJComponent(String value) {
+		String j = value.substring(7, 9);
+		int jInt = Integer.parseInt(j);
+		String jName;
+		switch(jInt) {
+		case 1:
+			jName = "Alba";
+			break;
+		case 2:
+			jName = "Arad";
+			break;
+		case 3:
+			jName = "Argeș";
+			break;
+		case 4:
+			jName = "Bacău";
+			break;
+		case 5:
+			jName = "Bihor";
+			break;
+		case 6:
+			jName = "Bistrița-Năsăud";
+			break;
+		case 7:
+			jName = "Botoșani";
+			break;
+		case 8:
+			jName = "Brașov";
+			break;
+		case 9:
+			jName = "Brăila";
+			break;
+		case 10:
+			jName = "Buzău";
+			break;
+		case 11:
+			jName = "Caraș-Severin";
+			break;
+		case 12:
+			jName = "Cluj";
+			break;
+		case 13:
+			jName = "Constanța";
+			break;
+		case 14:
+			jName = "Covasna";
+			break;
+		case 15:
+			jName = "Dâmbovița";
+			break;
+		case 16:
+			jName = "Dolj";
+			break;
+		case 17:
+			jName = "Galați";
+			break;
+		case 18:
+			jName = "Gorj";
+			break;
+		case 19:
+			jName = "Harghita";
+			break;
+		case 20:
+			jName = "Hunedoara";
+			break;
+		case 21:
+			jName = "Ialomița";
+			break;
+		case 22:
+			jName = "Iași";
+			break;
+		case 23:
+			jName = "Ilfov";
+			break;
+		case 24:
+			jName = "Maramureș";
+			break;
+		case 25:
+			jName = "Mehedinți";
+			break;
+		case 26:
+			jName = "Mureș";
+			break;
+		case 27:
+			jName = "Neamț";
+			break;
+		case 28:
+			jName = "Olt";
+			break;
+		case 29:
+			jName = "Prahova";
+			break;
+		case 30:
+			jName = "Satu Mare";
+			break;
+		case 31:
+			jName = "Sălaj";
+			break;
+		case 32:
+			jName = "Sibiu";
+			break;
+		case 33:
+			jName = "Suceava";
+			break;
+		case 34:
+			jName = "Teleorman";
+			break;
+		case 35:
+			jName = "Timiș";
+			break;
+		case 36:
+			jName = "Tulcea";
+			break;
+		case 37:
+			jName = "Vaslui";
+			break;
+		case 38:
+			jName = "Vâlcea";
+			break;
+		case 39:
+			jName = "Vrancea";
+			break;
+		case 40:
+			jName = "București";
+			break;
+		case 41:
+			jName = "București - Sector 1";
+			break;
+		case 42:
+			jName = "București - Sector 2";
+			break;
+		case 43:
+			jName = "București - Sector 3";
+			break;
+		case 44:
+			jName = "București - Sector 4";
+			break;
+		case 45:
+			jName = "București - Sector 5";
+			break;
+		case 46:
+			jName = "București - Sector 6";
+			break;
+		case 51:
+			jName = "Călărași";
+			break;
+		case 52:
+			jName = "Giurgiu";
+			break;
+		default:
+			jName = "";
+		}
+		String res = "";
+		if(jName != "") {
+			res = "Number " + j + " means you were born, or live in the county with this code, county name being " + jName;
+		}
+		return res;
+	}
+	
+	private String checkNComponent(String value) {
+		String n = value.substring(9, 12);
+		String res = "Number " + n + " means you are ";
+		return res;
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setContentType("text/html;charset=UTF-8");
+		
+		PrintWriter pw = resp.getWriter();
+		
+		pw = resp.getWriter();
+		
+		String cnp = req.getParameter("cnp");
+		
+		//check CNP format
+		if(cnp.length() < 13) {
+			pw.print("<p class='validation-msg-error'>CNP " + cnp + " has less than 13 characters!</p>");
+			return;
+		}
+		if(cnp.length() > 13) {
+			pw.print("<p class='validation-msg-error'>CNP " + cnp + " has more than 13 characters!</p>");
+			return;
+		}
+		if(cnp.length() == 13 && !cnp.matches("[0-9]+")) {
+			pw.print("<p class='validation-msg-error'>CNP " + cnp + " does not contain only digits!</p>");
+			return;
+		}
+		if(cnp.length() == 13 && cnp.matches("[0-9]+")) {
+			pw.print("<p class='validation-msg-success'>CNP " + cnp + " has the correct format!</p>");
+		}
+			
+		pw.print("<h3>Your CNP explained:</h3>");
+		
+		//check component S
+		String[] sResult = checkSComponent(cnp);
+		if(sResult[0] == "") {
+			pw.print("<p class='validation-msg-error'>The S component digit of the CNP (" + cnp.substring(0, 1) + ") is not valid!</p>");
+			return;
+		}
+		pw.print("<p>- Component S -- sex and century (first digit): " + sResult[0] + "</p>");
+		
+		//check component A
+		String[] aResult = checkAComponent(cnp, sResult[1]);
+		pw.print("<p>- Component AA -- last two digits in year of birth (2nd and 3rd digit): " + aResult[0] + "</p>");
+		
+		//check component L
+		String lResult = checkLComponent(cnp);
+		if(lResult == "") {
+			pw.print("<p class='validation-msg-error'>The LL component digits of the CNP (" + cnp.substring(3, 5) + ") are not valid!</p>");
+			return;
+		}
+		pw.print("<p>- Component LL -- month of birth (4th and 5th digit): " + lResult + "</p>");
+		
+		//check component Z
+		String zResult = checkZComponent(cnp, aResult[1]);
+		if(zResult == "") {
+			pw.print("<p class='validation-msg-error'>The ZZ component digits of the CNP (" + cnp.substring(5, 7) + ") are not valid!</p>");
+			return;
+		}
+		pw.print("<p>- Component ZZ -- day of birth (6th and 7th digit): " + zResult + "</p>");
+		
+		//check component J
+		String jResult = checkJComponent(cnp);
+		if(jResult == "") {
+			pw.print("<p class='validation-msg-error'>The JJ component digits of the CNP (" + cnp.substring(7, 9) + ") are not valid!</p>");
+			return;
+		}
+		pw.print("<p>- Component JJ -- current county (8th and 9th digit): " + jResult + "</p>");
+		
+		//check component N
+		pw.close();
+	}
+	
+	
+
+}

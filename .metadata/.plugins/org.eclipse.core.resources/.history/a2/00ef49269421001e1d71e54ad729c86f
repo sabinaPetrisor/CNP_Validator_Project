@@ -1,0 +1,145 @@
+package com.validator;
+
+import java.io.IOException;
+
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;  
+import java.util.Date;
+
+public class CNPValidator extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	private String[] checkSComponent(String value) {
+		int s = Integer.parseInt(value.substring(0, 1));
+		String res;
+		String begginingOfYear = "";
+		switch(s) {
+		case 1:
+			res = "Digit 1 means you are a male born between 1900 and 1999";
+			begginingOfYear = "19";
+			break;
+		case 2:
+			res = "Digit 2 means you are a female born between 1900 and 1999";
+			begginingOfYear = "19";
+			break;
+		case 3:
+			res = "Digit 3 means you are a male born between 1800 and 1899";
+			begginingOfYear = "18";
+			break;
+		case 4:
+			res = "Digit 4 means you are a female born between 1800 and 1899";
+			begginingOfYear = "18";
+			break;
+		case 5:
+			res = "Digit 5 means you are a male born between 2000 and 2099";
+			begginingOfYear = "20";
+			break;
+		case 6:
+			res = "Digit 6 means you are a female born between 2000 and 2099";
+			begginingOfYear = "20";
+			break;
+		case 7:
+			res = "Digit 7 means you are a male resident";
+			break;
+		case 8:
+			res = "Digit 7 means you are a female resident";
+			break;
+		default:
+			res = "";
+		}
+		String[] arrayToReturn = new String[2];
+		arrayToReturn[0] = res;
+		arrayToReturn[1] = begginingOfYear;
+		return arrayToReturn;	
+	}
+	
+	private String checkAComponent(String value, String begginingOfYear) {
+		String res = "Number " + value.substring(1, 3) + " means you year of birth is " + begginingOfYear.concat(value.substring(1, 3)); 
+		return res;
+	}
+	
+	private String checkLComponent(String value) throws ParseException {
+		String res = "";
+		String l = value.substring(3, 5);
+		if(l.matches("0[1-9]|1[0-2]")) {
+			String d = ("01-".concat(l)).concat("-2023");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+			Date date = dateFormat.parse(d);
+			res = "Number " + l + " means your month of birth is " + date;
+		}
+		return res;
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setContentType("text/html;charset=ISO-8859-1");
+		
+		PrintWriter pw = resp.getWriter();
+		
+		pw = resp.getWriter();
+		
+		String cnp = req.getParameter("cnp");
+		
+		//check CNP format
+		if(cnp.length() < 13) {
+			pw.print("<p class='validation-msg-error'>CNP " + cnp + " has less than 13 characters!</p>");
+			return;
+		}
+		if(cnp.length() > 13) {
+			pw.print("<p class='validation-msg-error'>CNP " + cnp + " has more than 13 characters!</p>");
+			return;
+		}
+		if(cnp.length() == 13 && !cnp.matches("[0-9]+")) {
+			pw.print("<p class='validation-msg-error'>CNP " + cnp + " does not contain only digits!</p>");
+			return;
+		}
+		if(cnp.length() == 13 && cnp.matches("[0-9]+")) {
+			pw.print("<p class='validation-msg-success'>CNP " + cnp + " has the correct format!</p>");
+		}
+			
+		pw.print("<h3>Your CNP explained:</h3>");
+		
+		//check component S
+		String[] sResult = checkSComponent(cnp);
+		if(sResult[0] == "") {
+			pw.print("<p class='validation-msg-error'>The S component digit of the CNP (" + cnp.substring(0, 1) + ") is not valid!</p>");
+			return;
+		}
+		pw.print("<p>- Component S -- sex and century (first digit): " + sResult[0] + "</p>");
+		
+		//check component A
+		String aResult = checkAComponent(cnp, sResult[1]);
+		pw.print("<p>- Component AA -- last two digits in year of birth (2nd and 3rd digit): " + aResult + "</p>");
+		
+		//check component L
+		try {
+			String lResult = checkLComponent(cnp);
+			System. out. println(lResult);
+			if(lResult == "") {
+				pw.print("<p class='validation-msg-error'>The LL component digits of the CNP (" + cnp.substring(3, 5) + ") are not valid!</p>");
+				return;
+			}
+			pw.print("<p>- Component LL -- month of birth (4th and 5th digit): " + lResult + "</p>");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pw.close();
+	}
+	
+	
+
+}

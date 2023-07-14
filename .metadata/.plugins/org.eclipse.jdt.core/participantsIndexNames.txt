@@ -1,0 +1,3 @@
+INDEX VERSION 1.134
+D:\proiecte_extra\CNP_Validator_Java_Maven_2\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2586262436.index
+\CNPValidatorProject\src\main\resources

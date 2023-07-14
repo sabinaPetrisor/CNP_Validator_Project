@@ -1,0 +1,18 @@
+$(document).ready(function() {
+	$('#check-button').click(function() {
+		$.ajax ({
+		type: 'post',
+		url: '/validator',
+		data: {
+			cnp: $('#cnp').val()
+		},
+		success: function(resp) {
+			$('#msg').html(resp);
+		},
+		error: function (jqXHR, exception) {
+			console.log('Error occured!!');
+			}
+		});
+	});
+	return false;
+});

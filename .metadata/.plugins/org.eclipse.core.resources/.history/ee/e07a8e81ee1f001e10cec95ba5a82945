@@ -1,0 +1,24 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CNP Validator</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" charset="ISO-8859-1">
+	<style> <%@include file="../css/index.css" %> </style>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script>
+	<script><%@include file="../javascript/display-message-after-click.js" %></script>
+</head>
+<body>
+	<p class="page-title">CNP Validator</p>
+	<div class="container">
+		<form action="" class="form" method="post">
+			<input type="text" placeholder="Enter a CNP" class="insert-text" id="cnp" name="cnp">
+			<button type="submit" class="form-button" id="check-button">Check</button>
+		</form>
+	</div>
+	
+	<div id="msg">
+	</div>
+</body>
+</html>

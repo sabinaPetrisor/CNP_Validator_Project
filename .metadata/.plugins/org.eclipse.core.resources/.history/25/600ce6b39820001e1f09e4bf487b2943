@@ -1,0 +1,68 @@
+/*function callAjax(e){
+	e.preventDefault();
+	$.ajax ({
+			type: 'post',
+			url: '/validator',
+			data: {
+				cnp: $('#cnp').val()
+			},
+			success: function(response) {
+				console.log("Pare ca merge!")
+				$('#msg').jsp(response);
+			},
+			error: function (jqXHR, exception) {
+                 console.log('Error occured!!');
+              }
+		});
+}*/
+
+$(document).ready(function() {
+	$('#check-button').click(function() {
+		$('#validation-form').submit(function(e) {
+			e.preventDefault();
+			$.ajax ({
+			type: 'post',
+			url: '/validator',
+			data: {
+				cnp: $('#cnp').val()
+			},
+			//processData: false,
+			success: function(resp) {
+				$('#msg').html(resp);
+				//console.log("Pare ca merge!");
+			},
+			error: function (jqXHR, exception) {
+                 console.log('Error occured!!');
+              }
+            });
+		});
+	});
+});
+/*$(document).ready(function() {
+	$('#check-button').click(function() {
+		//e.preventDefault();
+    	//e.stopPropagation();
+    	var cnp = $('#cnp').val();
+		$.ajax ({
+			type: 'post',
+			url: '/validator',
+			data: {
+				cnp: cnp
+			},
+			//processData: false,
+			success: function(resp) {
+				$('#msg').html(resp);
+				//console.log("Pare ca merge!");
+			},
+			error: function (jqXHR, exception) {
+                 console.log('Error occured!!');
+              }
+		});*/
+		/*var cnpvalue = $("#cnp").val();
+		$.post("/CNPValidator", {
+			cnp: cnpvalue
+		}, function(data) {
+			$("#msg").jsp(data);
+		});*/
+	//});
+//});
