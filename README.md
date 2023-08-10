@@ -1,1 +1,1 @@
-# CNP_Validator_Project
+CNP (cod numeric personal, in Romanian; personal numeric code, in English) is a unique 13 letter code given to a Romanian person at birth. This project not only checks if a CNP is valid or not, but it also explains what each of the 13 containing digits mean.
